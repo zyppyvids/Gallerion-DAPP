@@ -1,2 +1,27 @@
-# Gallerion-DAPP
-Gallerion is a Decentralised App in which you can buy pictures and photos, or you can support their.
+# Gallerion DAPP
+**Gallerion** is a fully-functional Decentralized Application consisting of Solidity smart contract in the Ethereum blockchain + client-side app (HTML5) and server-side logic (JavaScript). The Gallerion keeps some data and logic in the Ethereum blockchain and provides UI to access it.
+
+## General Requirements
+- Smart contracts, implemented in Solidity, deployed in the Robsten testnet
+- Client-side app - (HTML5)
+- Decentralized Storage - IPFS
+- Unit tests
+- Server-side logic - (JavaScript)
+
+## Business Logic
+- *Guests* can view the *photos and pictures*
+  - They don't see their contracts and addresses
+- *Guests* can register as *users* and *buy pictures*
+  - When a *picture is bought* the payment is send to the smart contract
+  - The smart contract retain *10% as commision*
+- *Authors* register and list *picures* for *sell* in the Ethereum blockchain
+  - Each *picture* consists JSON document + image in IPFS
+- *Users* should have a wallet
+  - *MetaMask*
+  - Transaction signing is in the client-side
+  
+## Bonus 
+- Create token
+- People can use ETHs only to buy our token
+- Make the token the main currency and accept only it
+
