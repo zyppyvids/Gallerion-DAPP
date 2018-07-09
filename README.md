@@ -25,3 +25,4 @@
 - People can use ETHs only to buy our token
 - Make the token the main currency and accept only it
 
+![Decentralised App](https://tuku.vimsky.com/images/2018/02/80dc7f722a344d6d84556e990ff16018.jpg)
