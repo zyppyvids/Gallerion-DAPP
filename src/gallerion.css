@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400');
+
+body {
+    font-family: Lato;
+    font-weight: 300;
+    height: 100%;
+    color: rgb(212, 211, 211);
+}
+
+.bg {
+    background-color: rgb(36, 35, 35);
+}
+
+#menu {
+    font-weight: 400;
+    background: rgb(20, 20, 20);
+    text-align: center;
+    padding: 5px;
+    line-height: 1.5;
+    border-radius: 3px;
+    overflow: auto;
+}
+
+#menu a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+#menu a{
+    color: white;
+    -webkit-transition: color 1s;
+    transition: color 1s;
+    -webkit-transition: background 0.5s;
+    transition: background 0.5s;
+}
+
+#menu a:hover {
+    background: rgb(255, 255, 255);
+    color: black;
+}
+
+main > section {
+    display: none;
+    padding: 20px 5px;
+}
+
+form > input{
+    border-radius: 4px;
+    box-shadow: 5px 5px;
+}
+
+section#viewHome {
+    display: block;
+}
+
+section h1 {
+    margin: 10px 0px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+section h2 {
+    margin: 10px 0px;
+    font-size: 1.1em;
+    text-align: center;
+}
+
+section h3 {
+    margin: 10px 0px;
+    font-size: 1em;
+    text-align: center;
+}
+
+.creatorImg {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 15%;
+    border-radius: 50%;
+}
+
+#infoBox, #errorBox, #loadingBox {
+    width: 80%;
+    margin: 10px auto;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+#infoBox>header, #errorBox>header, #loadingBox>header {
+    float: right;
+    margin-right: 5px;
+}
+
+#infoBox>header:hover, #errorBox>header:hover, #loadingBox>header:hover {
+    transition: all 0.2s;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#loadingBox {
+    background: rgb(253, 0, 219);
+}
+#infoBox {
+    background: rgb(60, 237, 243);
+}
+#errorBox {
+    background: rgb(255, 0, 0);
+}
+footer {
+    position: fixed;
+    right: 5px;
+    bottom: 0;
+    left: 5px;
+    padding: 1rem;
+    background-color: rgb(20, 20, 20);
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: white;
+}
+
+div {
+    border: 1px solid #DDD;
+    border-radius: 4px;
+    padding: 5px;
+    max-width: 100%;
+    height: auto;
+    margin: 10px;
+}
