@@ -1,7 +1,17 @@
 $(document) .ready(function() {
     const gallerionContractAddress = "";
     const gallerionContractABI = "";
+
+    showView("viewHome");
+    $('.btn').removeClass('active');
+    $('#linkHome').addClass('active');
     
+    $('.btn').click(function(e) {
+        e.preventDefault();
+        $('.btn').removeClass('active');
+        $(this).addClass('active');
+    });
+
     $('#linkSubmitImages').click(function () {
         showView("viewSubmitImages")
     });
@@ -18,8 +28,23 @@ $(document) .ready(function() {
     $('#imageUploadButton').click(uploadImage);
 
     $('#linkRegisterUser').click(function () {
+        $('#password').val('');
+        $('#username').val('');
         showView("viewRegisterUser")
     });
+
+    $('#linkDeleteUser').click(deleteUser);
+
+    $("#registerUser").click(function(){
+    var userName = $("#username").val();
+    var password = $("#password").val();
+    if( !userName =='' && !password ==''){
+        registerUser(userName, password);
+    }
+    else{
+        showError("Invalid Username or Password!")
+    }
+})
     
     const ipfs = window.IpfsApi('localhost', '5001');
     const Buffer = ipfs.Buffer;
@@ -38,6 +63,34 @@ function showView(viewName) {
     // Hide all views and show the selected view only
     $('main > section').hide();
     $('#' + viewName).show();
+
+    $('a').hide();
+
+    if (localStorage.User) {
+        $('#linkRegisterUser').hide();
+
+        $('#linkHome').show();
+        $('#linkGetImages').show();
+        $('#linkSubmitImages').show();
+        $('#linkDeleteUser').show();
+    }
+    else {
+        $('#linkGetImages').hide();
+        $('#linkSubmitImages').hide();
+        $('#linkDeleteUser').hide();
+
+        $('#linkRegisterUser').show();
+        $('#linkHome').show();
+    }
+}
+
+function showLoggedInButtons() {
+    $('#linkRegisterUser').hide();
+
+    $('#linkHome').show();
+    $('#linkGetImages').show();
+    $('#linkSubmitImages').show();
+    $('#linkDeleteUser').show();
 }
 
 function showInfo(message) {
@@ -119,4 +172,24 @@ function viewGetImages() {
             $('#viewGetImages').append('<div> No images in the gallery.</div>');
         }
     })
+}
+
+function registerUser(userName, password){
+    var json ={
+        'userName': userName,
+        'password': password
+    }
+    localStorage['User'] = json;
+    showLoggedInButtons();
+    showView("viewHome");
+    $('.btn').removeClass('active');
+    $('#linkHome').addClass('active');
+}
+
+function deleteUser() {
+    localStorage.clear();
+    $('#userInfo').text('')
+    showView('viewHome');
+    $('.btn').removeClass('active');
+    $('#linkHome').addClass('active');
 }
