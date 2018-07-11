@@ -6,12 +6,17 @@
     <meta charset="utf-8" />
     <title>Gallerion DApp</title>
     <link rel="stylesheet" type="text/css" href="gallerion.css"/>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <link rel=icon href="images/favicon.ico" sizes="16x16" type="image/ico">
+
     <script src="lib/jquery-3.3.1.min.js"></script>
     <script src="lib/sha256.min.js"></script>
-    <script src="gallerion.js"></script>
+    <script src="lib/web3.min.js"></script>
+    
     <script src="https://unpkg.com/ipfs-api/dist/index.min.js"></script>
+    <script src="gallerion.js"></script>
 </head>
 
 <body class="bg">
@@ -20,6 +25,7 @@
     <a href="#" id="linkSubmitImages" class="btn">Submit Images</a>
     <a href="#" id="linkGetImages" class="btn">View Images</a>
     <a href="#" id="linkRegisterUser" class="btn">User Registration</a>
+    <a href="#" id="linkUserInfo" class="btn">User Info</a>
     <a href="#" id="linkDeleteUser" class="btn">Delete User</a>
 </header>
 
@@ -41,7 +47,7 @@
             <li><b>Authors</b> register and list picures for <b>sell in the Ethereum blockchain</b></li>
         </ul>
         <h2>Developer Team:</h2>
-        <img src="images/creatorimg.jpg" alt="Creator" class="creatorImg">
+        <img src="images/creatorimg.jpg" alt="Creator" class="profileImg">
         <h3>Emil Yordanov</h3>
         <p style="text-align: center; padding-bottom: 3%;"><i class="fa fa-paint-brush" style="color:rgb(3, 177, 162);"></i> and <i class="fa fa-code" style="color:rgb(3, 177, 162);"></i></p>
     </section>
@@ -69,6 +75,13 @@
             <br>
             <input type="button" id="registerUser" value="Sign Up" />
         </form>
+    </section>
+
+    <section id="viewUserInfo">
+            <img src="images/nophoto_profile.jpg" alt="Profile Picture" class="profileImg">
+            <h1 id="usernameField"></h1>
+            <h3 id="textAddress"></h3>
+            <i><p id="userAddress"></p></i>
     </section>
 </main>
 

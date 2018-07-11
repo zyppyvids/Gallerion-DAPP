@@ -87,7 +87,7 @@ section h3 {
     text-align: center;
 }
 
-.creatorImg {
+.profileImg {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -99,9 +99,13 @@ section h3 {
     -webkit-transition: all .2s ease-in-out;
 }
 
-.creatorImg:hover{
+.profileImg:hover{
     transform: scale(1.5, 1.5);
     -webkit-transform: scale(1.5, 1.5);
+}
+
+#userAddress{
+    text-align: center;
 }
 
 #infoBox, #errorBox, #loadingBox {

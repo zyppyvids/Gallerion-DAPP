@@ -1,43 +1,183 @@
-$(document) .ready(function() {
-    const gallerionContractAddress = "";
-    const gallerionContractABI = "";
+var Gallerion = {};
+
+jQuery(document) .ready(function() {
+    Gallerion.gallerionContractAddress = "0xb6b51b8c297fa3dcb32b6f8fa4153459bad7cbf1";
+    Gallerion.gallerionContractABI = [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "buy",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_hash",
+				"type": "string"
+			},
+			{
+				"name": "_price",
+				"type": "uint256"
+			}
+		],
+		"name": "sell",
+		"outputs": [
+			{
+				"name": "dateAdded",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "balances",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "index",
+				"type": "uint256"
+			}
+		],
+		"name": "getImage",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getImagesCount",
+		"outputs": [
+			{
+				"name": "length",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "address"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "ownedImages",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
 
     showView("viewHome");
-    $('.btn').removeClass('active');
-    $('#linkHome').addClass('active');
+    jQuery('.btn').removeClass('active');
+    jQuery('#linkHome').addClass('active');
     
-    $('.btn').click(function(e) {
+    jQuery('.btn').click(function(e) {
         e.preventDefault();
-        $('.btn').removeClass('active');
-        $(this).addClass('active');
+        jQuery('.btn').removeClass('active');
+        jQuery(this).addClass('active');
     });
 
-    $('#linkSubmitImages').click(function () {
+    jQuery('#linkSubmitImages').click(function () {
         showView("viewSubmitImages")
     });
     
-    $('#linkHome').click(function () {
+    jQuery('#linkHome').click(function () {
         showView("viewHome")
     });
     
-    $('#linkGetImages').click(function () {
-        $('#viewGetImages div').remove();
+    jQuery('#linkGetImages').click(function () {
+        jQuery('#viewGetImages div').remove();
         showView("viewGetImages");
         viewGetImages();
     });
-    $('#imageUploadButton').click(uploadImage);
+    jQuery('#imageUploadButton').click(uploadImage);
 
-    $('#linkRegisterUser').click(function () {
-        $('#password').val('');
-        $('#username').val('');
+    jQuery('#linkRegisterUser').click(function () {
+        jQuery('#password').val('');
+        jQuery('#username').val('');
         showView("viewRegisterUser")
     });
 
-    $('#linkDeleteUser').click(deleteUser);
+    jQuery('#linkUserInfo').click(function () {
+        if(typeof web3 !== 'undefined'){
+            account = web3.eth.accounts[0];
+            jQuery('#userAddress').text(account);
+            jQuery('#textAddress').text('Address:')
+        }
+        else{
+            jQuery('#textAddress').text('Please install MetaMask to see your Address here!')
+        }
+        jQuery('#usernameField').text('Hello ' + JSON.parse(localStorage['User']).userName + '!' );
+        showView("viewUserInfo")
+    });
 
-    $("#registerUser").click(function(){
-    var userName = $("#username").val();
-    var password = $("#password").val();
+    jQuery('#linkDeleteUser').click(deleteUser);
+
+    jQuery("#registerUser").click(function(){
+    var userName = jQuery("#username").val();
+    var password = jQuery("#password").val();
     if( !userName =='' && !password ==''){
         registerUser(userName, password);
     }
@@ -50,67 +190,69 @@ $(document) .ready(function() {
     const Buffer = ipfs.Buffer;
 });
 
-$(document).on({
+jQuery(document).on({
     ajaxStart: function () {
-        $("#loadingBox").show()
+        jQuery("#loadingBox").show()
     },
     ajaxStop: function () {
-        $("#loadingBox").hide()
+        jQuery("#loadingBox").hide()
     }
 });
 
 function showView(viewName) {
     // Hide all views and show the selected view only
-    $('main > section').hide();
-    $('#' + viewName).show();
+    jQuery('main > section').hide();
+    jQuery('#' + viewName).show();
 
-    $('a').hide();
+    jQuery('a').hide();
 
     if (localStorage.User) {
-        $('#linkRegisterUser').hide();
+        jQuery('#linkRegisterUser').hide();
 
-        $('#linkHome').show();
-        $('#linkGetImages').show();
-        $('#linkSubmitImages').show();
-        $('#linkDeleteUser').show();
+        jQuery('#linkHome').show();
+        jQuery('#linkGetImages').show();
+        jQuery('#linkSubmitImages').show();
+        jQuery('#linkDeleteUser').show();
+        jQuery('#linkUserInfo').show();
     }
     else {
-        $('#linkGetImages').hide();
-        $('#linkSubmitImages').hide();
-        $('#linkDeleteUser').hide();
+        jQuery('#linkGetImages').hide();
+        jQuery('#linkSubmitImages').hide();
+        jQuery('#linkDeleteUser').hide();
+        jQuery('#linkUserInfo').hide();
 
-        $('#linkRegisterUser').show();
-        $('#linkHome').show();
+        jQuery('#linkRegisterUser').show();
+        jQuery('#linkHome').show();
     }
 }
 
 function showLoggedInButtons() {
-    $('#linkRegisterUser').hide();
+    jQuery('#linkRegisterUser').hide();
 
-    $('#linkHome').show();
-    $('#linkGetImages').show();
-    $('#linkSubmitImages').show();
-    $('#linkDeleteUser').show();
+    jQuery('#linkHome').show();
+    jQuery('#linkGetImages').show();
+    jQuery('#linkSubmitImages').show();
+    jQuery('#linkDeleteUser').show();
 }
 
 function showInfo(message) {
-    $('#infoBox>p').html(message);
-    $('#infoBox').show();
-    $('#infoBox>header').click(function () {
-        $('#infoBox').hide();
+    jQuery('#infoBox>p').html(message);
+    jQuery('#infoBox').show();
+    jQuery('#infoBox>header').click(function () {
+        jQuery('#infoBox').hide();
     });
 }
 
 function showError(errorMsg) {
-    $('#errorBox>p').html("Error: " + errorMsg);
-    $('#errorBox').show();
-    $('#errorBox>header').click(function () {
-        $('#errorBox').hide();
+    jQuery('#errorBox>p').html("Error: " + errorMsg);
+    jQuery('#errorBox').show();
+    jQuery('#errorBox>header').click(function () {
+        jQuery('#errorBox').hide();
     });
 }
 
 function uploadImage(){
-    if($('#imageForUpload')[0].files.length === 0){
+    if(jQuery('#imageForUpload')[0].files.length === 0){
         return showError("Please select a file to upload.");
     }
     let fileReader = new FileReader();
@@ -118,15 +260,17 @@ function uploadImage(){
         if(typeof web3 ==='undefined'){
             return showError("Please install MetaMask to access the Ethereum Web3 API from your Web browser.");
         }
+        const ipfs = window.IpfsApi('localhost', '5001');
+        const Buffer = ipfs.Buffer;
         let fileBuffer = Buffer.from(fileReader.result);
 
-        let contract = web3.eth.contract(gallerionContractABI).at(gallerionContractAddress);
-        IPFS.files.add(fileBuffer, (err, result) => {
+        let contract = web3.eth.contract(Gallerion.gallerionContractABI).at(Gallerion.gallerionContractAddress);
+        ipfs.files.add(fileBuffer, (err, result) => {
             if (err)
                 return showError(err);
             if (result) {
                 let ipfsHash = result[0].hash;
-                contract.add(ipfsHash, function (err, txHash) {
+                contract.sell(ipfsHash, 1, function (err, txHash) {
                     if(err)
                         return showError("Smart contract call failed: " + err);
                     showInfo(`Image ${ipfsHash} <b>successfully added</b> to the gallery. Transaction hash: ${txHash}`);
@@ -134,7 +278,7 @@ function uploadImage(){
             }
         })
     };
-    fileReader.readAsArrayBuffer($('#imageForUpload')[0].files[0]);
+    fileReader.readAsArrayBuffer(jQuery('#imageForUpload')[0].files[0]);
 }
 
 function viewGetImages() {
@@ -148,28 +292,34 @@ function viewGetImages() {
         
         let imagesCount = result.toNumber();
         if (imagesCount > 0){
-            let html = $('<div>');
+            let html = jQuery('<div>');
             for(let i = 0; i < imagesCount; i++){
                 contract.getImage(i, function(err,result) {
                     if(err)
                         return showError("Smart contract call failed: "+ err);
                     let ipfsHash = result[0];
                     let contractPublishDate = result[1];
-                    let div = $('<div>');
+                    let author = result[2];
+                    let price = result[3];
+                    let div = jQuery('<div>');
                     let url = "https://ipfs.io/ipfs/" + ipfsHash;
 
                     let displayDate = new Date(contractPublishDate * 1000).toLocaleString();
                     div
-                        .append($(`<p>Image published on: ${displayDate}</p>`))
-                        .append($(`<img src="${url}"/>`))
+                        .append(jQuery(`<p>Image published on: ${displayDate}</p>`))
+                        .append(jQuery(`<p>Author Address: <i>${author}</i></p>`))
+                        .append(jQuery(`<img src="${url}"/>`))
+                        .append(jQuery(`<p>Price: ${price}/>`))
+                        .append(jQuery(`<input type="button" id="linkBuyImage" value="Buy!" style = "color: red; "/>`))
+                        .append(jQuery(`<input type="button" id="linkDonate" value="Donate!" style = "color: green; "/>`))
                     html.append(div);
                 })
             }
             html.append('</div>');
-            $('#viewGetImages').append(html);
+            jQuery('#viewGetImages').append(html);
         }
         else {
-            $('#viewGetImages').append('<div> No images in the gallery.</div>');
+            jQuery('#viewGetImages').append('<div> No images in the gallery. You can upload!</div>');
         }
     })
 }
@@ -177,19 +327,19 @@ function viewGetImages() {
 function registerUser(userName, password){
     var json ={
         'userName': userName,
-        'password': password
+        'password': sha256(password)
     }
-    localStorage['User'] = json;
+    localStorage['User'] = JSON.stringify(json);
     showLoggedInButtons();
     showView("viewHome");
-    $('.btn').removeClass('active');
-    $('#linkHome').addClass('active');
+    jQuery('.btn').removeClass('active');
+    jQuery('#linkHome').addClass('active');
 }
 
 function deleteUser() {
     localStorage.clear();
-    $('#userInfo').text('')
+    jQuery('#userInfo').text('')
     showView('viewHome');
-    $('.btn').removeClass('active');
-    $('#linkHome').addClass('active');
+    jQuery('.btn').removeClass('active');
+    jQuery('#linkHome').addClass('active');
 }
