@@ -129,6 +129,8 @@ jQuery(document) .ready(function() {
 	}
 ];
 
+    document.addEventListener('contextmenu', event => event.preventDefault()); //If you are here to disable this and download an image, think about the hard work given in making the image you want ;)
+
     showView("viewHome");
     jQuery('.btn').removeClass('active');
     jQuery('#linkHome').addClass('active');
@@ -193,6 +195,10 @@ jQuery(document) .ready(function() {
         showError("Invalid Username or Password!")
     }
 })
+
+    jQuery('#linkBuyButton').click(); //TODO
+
+    jQuery('#linkDonateButton').click(); //TODO
     
     const ipfs = window.IpfsApi('localhost', '5001');
     const Buffer = ipfs.Buffer;
@@ -318,7 +324,7 @@ function viewGetImages() {
                         .append(jQuery(`<p>Image published on: ${displayDate}</p>`))
                         .append(jQuery(`<p>Author Address: <i>${author}</i></p>`))
                         .append(jQuery(`<img src="${url}"/>`))
-                        .append(jQuery(`<p>Price: ${price}/>`))
+                        .append(jQuery(`<p>Price: ${price}</p>`))
                         .append(jQuery(`<input type="button" id="linkBuyImage" value="Buy!" style = "color: red; "/>`))
                         .append(jQuery(`<input type="button" id="linkDonate" value="Donate!" style = "color: green; "/>`))
                     html.append(div);
@@ -328,7 +334,7 @@ function viewGetImages() {
             jQuery('#viewGetImages').append(html);
         }
         else {
-            jQuery('#viewGetImages').append('<div> No images in the gallery. You can upload!</div>');
+            jQuery('#viewGetImages').append('<div> No images in the gallery. You can sell yours!</div>');
         }
     })
 }
