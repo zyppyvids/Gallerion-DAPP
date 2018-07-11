@@ -1,133 +1,10 @@
 var Gallerion = {};
 
+const ETH = 1000000000000000000;
+
 jQuery(document) .ready(function() {
-    Gallerion.gallerionContractAddress = "0x02348b3094ee16873d0efe22a3341af04c5a326b";  //Change every time you start `ganache-cli`
-    Gallerion.gallerionContractABI = [
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"name": "buy",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_hash",
-				"type": "string"
-			},
-			{
-				"name": "_price",
-				"type": "uint256"
-			}
-		],
-		"name": "sell",
-		"outputs": [
-			{
-				"name": "dateAdded",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"name": "balances",
-		"outputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"name": "getImage",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			},
-			{
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"name": "",
-				"type": "address"
-			},
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getImagesCount",
-		"outputs": [
-			{
-				"name": "length",
-				"type": "uint256"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "address"
-			},
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "ownedImages",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	}
-];
+    Gallerion.gallerionContractAddress = "";  //Change every time you start `ganache-cli`
+    Gallerion.gallerionContractABI = "";
 
     document.addEventListener('contextmenu', event => event.preventDefault()); //If you are here to disable this and download an image, think about the hard work given in making the image you want ;)
 
@@ -315,7 +192,7 @@ function viewGetImages() {
                     let ipfsHash = result[0];
                     let contractPublishDate = result[1];
                     let author = result[2];
-                    let price = result[3];
+                    let price = result[3] * ETH;
                     let div = jQuery('<div>');
                     let url = "https://ipfs.io/ipfs/" + ipfsHash;
 
@@ -324,7 +201,7 @@ function viewGetImages() {
                         .append(jQuery(`<p>Image published on: ${displayDate}</p>`))
                         .append(jQuery(`<p>Author Address: <i>${author}</i></p>`))
                         .append(jQuery(`<img src="${url}"/>`))
-                        .append(jQuery(`<p>Price: ${price}</p>`))
+                        .append(jQuery(`<p>Price: ${price} WEI</p>`))
                         .append(jQuery(`<input type="button" id="linkBuyImage" value="Buy!" style = "color: red; "/>`))
                         .append(jQuery(`<input type="button" id="linkDonate" value="Donate!" style = "color: green; "/>`))
                     html.append(div);

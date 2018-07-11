@@ -9,22 +9,43 @@ contract gallerionContract {
         uint256 price;
     }
 
-    Image[] private images;
+    address public owner;
 
-    mapping(address => uint) public balances;
+    uint public imageCount;
+    uint public boughtImages;
+
+    Image[] private images;
 
     mapping(address => string[])
     public ownedImages;
 
+    constructor () public {
+        owner = msg.sender;
+        imageCount = 0;
+        boughtImages = 0;
+    }
+
+    modifier onlyOwner {
+        require(msg.sender == owner);
+        _;
+    }
+
+    function setOwnedImage() public onlyOwner{
+        ownedImages[msg.sender].push("test");
+        boughtImages++;
+    }
+
     function sell(string _hash, uint _price) public returns(uint dateAdded) {
         dateAdded = block.timestamp;
         images.push(Image(_hash, dateAdded, msg.sender, _price));
+        imageCount++;
     }
 
     function buy(uint index) public {
         Image memory image = images[index];
         ownedImages[msg.sender].push(image.hash);
         delete images[index];
+        imageCount--;
     }
 
     function getImagesCount() public view returns(uint length) {
