@@ -161,10 +161,18 @@ jQuery(document) .ready(function() {
     });
 
     jQuery('#linkUserInfo').click(function () {
-        if(typeof web3 !== 'undefined'){
-            account = web3.eth.accounts[0];
-            jQuery('#userAddress').text(account);
-            jQuery('#textAddress').text('Address:')
+        if(typeof Web3 !== 'undefined'){
+            web3js = new Web3(web3.currentProvider); 
+            web3js.eth.getAccounts((err, accounts) => {
+                if (!err && accounts.length > 0) {
+                    var account = accounts[0];
+                    jQuery('#textAddress').text('Address:');
+                    jQuery('#userAddress').text(account);
+                } 
+                else{
+                    showError(err);
+                }
+            });
         }
         else{
             jQuery('#textAddress').text('Please install MetaMask to see your Address here!')
@@ -257,14 +265,15 @@ function uploadImage(){
     }
     let fileReader = new FileReader();
     fileReader.onload = function () {
-        if(typeof web3 ==='undefined'){
+        if(typeof Web3 ==='undefined'){
             return showError("Please install MetaMask to access the Ethereum Web3 API from your Web browser.");
         }
+        web3js = new Web3(web3.currentProvider); 
         const ipfs = window.IpfsApi('localhost', '5001');
         const Buffer = ipfs.Buffer;
         let fileBuffer = Buffer.from(fileReader.result);
 
-        let contract = web3.eth.contract(Gallerion.gallerionContractABI).at(Gallerion.gallerionContractAddress);
+        let contract = web3js.eth.contract(Gallerion.gallerionContractABI).at(Gallerion.gallerionContractAddress);
         ipfs.files.add(fileBuffer, (err, result) => {
             if (err)
                 return showError(err);
@@ -282,10 +291,10 @@ function uploadImage(){
 }
 
 function viewGetImages() {
-    if(typeof web3 === 'undefined')
+    if(typeof Web3 === 'undefined')
         return showError("Please install MetaMask to access the Ethereum Web3 API from your Web browser.");
-    
-    let contract = web3.eth.contract(gallerionContractABI).at(gallerionContractAddress);
+    web3js = new Web3(web3.currentProvider); 
+    let contract = web3js.eth.contract(Gallerion.gallerionContractABI).at(Gallerion.gallerionContractAddress);
     contract.getImagesCount(function (err, result){
         if(err)
             return showError("Smart contract failed: " + err);
