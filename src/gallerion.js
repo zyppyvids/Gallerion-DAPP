@@ -1,7 +1,7 @@
 var Gallerion = {};
 
 jQuery(document) .ready(function() {
-    Gallerion.gallerionContractAddress = "0xb6b51b8c297fa3dcb32b6f8fa4153459bad7cbf1";
+    Gallerion.gallerionContractAddress = "0x02348b3094ee16873d0efe22a3341af04c5a326b";  //Change every time you start `ganache-cli`
     Gallerion.gallerionContractABI = [
 	{
 		"constant": false,
