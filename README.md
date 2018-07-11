@@ -2,10 +2,10 @@
 **Gallerion** is a fully-functional Decentralized Application consisting of Solidity smart contract in the Ethereum blockchain + client-side app (HTML5) and server-side logic (JavaScript). The Gallerion keeps some data and logic in the Ethereum blockchain and provides UI to access it.
 
 ## General Requirements
-- Smart contracts, implemented in Solidity, deployed in the Ropsten testnet
+- Smart contracts, implemented in Solidity, deployed in a *local network*
 - Client-side app - (HTML5)
-- Decentralized Storage - IPFS
-- Unit tests
+- Decentralized Storage - (IPFS)
+- Unit tests - (Truffle Tests)
 - Server-side logic - (JavaScript)
 
 ## Business Logic
@@ -25,4 +25,6 @@
 - People can use ETHs only to buy our token
 - Make the token the main currency and accept only it
 
-<img align="center" src="https://tuku.vimsky.com/images/2018/02/80dc7f722a344d6d84556e990ff16018.jpg" alt="Decentralised App">
+<p align="center">
+<img src="https://tuku.vimsky.com/images/2018/02/80dc7f722a344d6d84556e990ff16018.jpg" alt="Decentralised App">
+</p>
