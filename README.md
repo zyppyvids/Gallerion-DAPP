@@ -5,7 +5,7 @@
 - Smart contracts, implemented in Solidity, deployed in a *local network* ✅
 - Client-side app - (HTML5) ✅
 - Decentralized Storage - (IPFS) ✅
-- Unit tests - (Truffle Tests)
+- Unit tests - (Truffle Tests) ✅
 - Server-side logic - (JavaScript) ✅
 
 ## Business Logic
