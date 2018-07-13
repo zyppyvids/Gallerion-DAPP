@@ -13,7 +13,6 @@
   - They don't see their contracts and addresses
 - *Guests* can register as *users* and *buy pictures*
   - When a *picture is bought* the payment is send to the smart contract
-  - The smart contract retain *10% as commision*
 - *Authors* register and list *picures* for *sell* in the Ethereum blockchain
   - Each *picture* consists JSON document + image in IPFS
 - *Users* should have a wallet
