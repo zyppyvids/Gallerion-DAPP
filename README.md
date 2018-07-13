@@ -1,8 +1,8 @@
-# Gallerion DAPP
+﻿# Gallerion DAPP
 **Gallerion** is a fully-functional Decentralized Application consisting of Solidity smart contract in the Ethereum blockchain + client-side app (HTML5) and server-side logic (JavaScript). The Gallerion keeps some data and logic in the Ethereum blockchain and provides UI to access it.
 
 ## General Requirements
-- Smart contracts, implemented in Solidity, deployed in a *local network* ✅
+- Smart contracts, implemented in Solidity, deployed in *Ropsten network* ✅
 - Client-side app - (HTML5) ✅
 - Decentralized Storage - (IPFS) ✅
 - Unit tests - (Truffle Tests) ✅

@@ -3,7 +3,7 @@ var Gallerion = {};
 const ETH = 1000000000000000000;
 
 jQuery(document) .ready(function() {
-    Gallerion.gallerionContractAddress = "0x42f102f4b80ceac3073558cc757d17f1ddc3b98d";  //Change every time you start `ganache-cli`
+    Gallerion.gallerionContractAddress = "0x16eb2307aaf1fdfd807557b366bc0617f235420f";  //Change every time you start `ganache-cli`
     Gallerion.gallerionContractABI = [
         {
             "constant": true,
@@ -169,7 +169,8 @@ jQuery(document) .ready(function() {
         }
     ];
 
-    document.addEventListener('contextmenu', event => event.preventDefault()); //If you are here to disable this and download an image, think about the hard work given in making the image you want ;)
+    document.addEventListener('contextmenu', event => event.preventDefault()); //It is illegal to steal pictures online ;)
+    jQuery(document).on('dragstart', 'img', function(event){ event.preventDefault(); }); //It is illegal to steal pictures online ;)
 
     showView("viewHome");
     jQuery('.btn').removeClass('active');
@@ -234,7 +235,7 @@ jQuery(document) .ready(function() {
     else{
         showError("Invalid Username or Password!")
     }
-})
+    });
 
     jQuery('#linkDonate').click(function () {
         jQuery('#authorAddr').val('');
@@ -245,15 +246,17 @@ jQuery(document) .ready(function() {
     jQuery("#donate").click(function(){
         var authorAddr = jQuery("#authorAddr").val();
         var value = jQuery("#value").val();
-        if( !authorAddr =='' && !value =='' && !authorAddr.length != 42 && !isNaN(value)) {
+        if( !authorAddr =='' && !value =='' && authorAddr.length == 42 && !isNaN(value)) {
             donateToAuthor(authorAddr, Number(value));
         }
         else{
             showError("Invalid Address or Value!")
         }
-    })
+    });
 
-    jQuery("#linkBuyImage").click(); //TODO
+    jQuery(document).on('click', '#linkBuyImage', function() {
+        buyImage(Number(this.className));
+    });
     
     const ipfs = window.IpfsApi('localhost', '5001');
     const Buffer = ipfs.Buffer;
@@ -380,10 +383,10 @@ function viewGetImages() {
                     let displayDate = new Date(contractPublishDate * 1000).toLocaleString();
                     div
                         .append(jQuery(`<p style="text-align:center;">Image published on: ${displayDate}</p>`))
-                        .append(jQuery(`<p style="text-align:center;">Author Address: <i>${author}</i></p>`))
+                        .append(jQuery(`<p style="text-align:center;" id="author${i}">Author Address: <i>${author}</i></p>`))
                         .append(jQuery(`<center><img src="${url}" alt="Loading..." class="ipfsImage"/></center>`))
-                        .append(jQuery(`<p>Price: ${price} ETH</p>`))
-                        .append(jQuery(`<input type="button" id="linkBuyImage" value="Buy!" style = "background-color: red; "/>`))
+                        .append(jQuery(`<p id="price${i}" class="${ipfsHash}">Price: ${price} ETH</p>`))
+                        .append(jQuery(`<input type="button" id="linkBuyImage" class="${i}" value="Buy!" style = "background-color: red; "/>`))
                     html.append(div);
                 })
             }
@@ -416,8 +419,35 @@ function deleteUser() {
     jQuery('#linkHome').addClass('active');
 }
 
-function buyImage(index) {
-    
+function buyImage(i) {
+    if(typeof Web3 === 'undefined')
+        return showError("Please install MetaMask to access the Ethereum Web3 API from your Web browser.");
+    web3js = new Web3(web3.currentProvider); 
+    web3js.eth.getAccounts((err, accounts) => {
+        if (!err && accounts.length > 0) {
+            var account = accounts[0];
+            var authorAddr = jQuery(`#author${i}`).text().split(" ")[2];
+            var amount = Number(jQuery(`#price${i}`).text().split(" ")[1]);
+            var hash = jQuery(`#price${i}`).attr('class');
+            console.log(amount);
+            console.log(hash);
+            web3js.eth.sendTransaction({from:account, to:authorAddr, value: amount * ETH},function(err, transHash){
+                if(err)
+                    showError(err);
+                let contract = web3js.eth.contract(Gallerion.gallerionContractABI).at(Gallerion.gallerionContractAddress);
+                console.log(i);
+                contract.buy(i, function (err, result) {
+                if(err)
+                    return showError("Smart contract call failed: "+ err);
+                showInfo(`Transaction hash: ${transHash}`);
+                window.open("https://ipfs.io/ipfs/" + hash);
+                })
+            });
+        } 
+        else {
+            showError(err);
+        }
+    });
 }
 
 function donateToAuthor(authorAddr, amount) {
@@ -427,11 +457,11 @@ function donateToAuthor(authorAddr, amount) {
     web3js.eth.getAccounts((err, accounts) => {
         if (!err && accounts.length > 0) {
             var account = accounts[0];
-            web3js.eth.sendTransaction({from:account, to:authorAddr, value: amount},function(err, transHash){
+            web3js.eth.sendTransaction({from:account, to:authorAddr, value: amount * ETH},function(err, transHash){
                 if(err)
                     showError(err);
                 else
-                    showInfo("Transaction hash: "+ transHash);
+                    showInfo(`Transaction hash: ${transHash}`);
             });
         } 
         else{
