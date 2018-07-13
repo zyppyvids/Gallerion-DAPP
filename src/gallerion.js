@@ -3,8 +3,171 @@ var Gallerion = {};
 const ETH = 1000000000000000000;
 
 jQuery(document) .ready(function() {
-    Gallerion.gallerionContractAddress = "";  //Change every time you start `ganache-cli`
-    Gallerion.gallerionContractABI = "";
+    Gallerion.gallerionContractAddress = "0x42f102f4b80ceac3073558cc757d17f1ddc3b98d";  //Change every time you start `ganache-cli`
+    Gallerion.gallerionContractABI = [
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "name": "index",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getImage",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "string"
+                },
+                {
+                    "name": "",
+                    "type": "uint256"
+                },
+                {
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [
+                {
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "ownedImages",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "getImagesCount",
+            "outputs": [
+                {
+                    "name": "length",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "owner",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "address"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "imageCount",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "_hash",
+                    "type": "string"
+                },
+                {
+                    "name": "_price",
+                    "type": "uint256"
+                }
+            ],
+            "name": "sell",
+            "outputs": [
+                {
+                    "name": "dateAdded",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [],
+            "name": "setOwnedImage",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "index",
+                    "type": "uint256"
+                }
+            ],
+            "name": "buy",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "boughtImages",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        }
+    ];
 
     document.addEventListener('contextmenu', event => event.preventDefault()); //If you are here to disable this and download an image, think about the hard work given in making the image you want ;)
 
@@ -73,9 +236,24 @@ jQuery(document) .ready(function() {
     }
 })
 
-    jQuery('#linkBuyButton').click(); //TODO
+    jQuery('#linkDonate').click(function () {
+        jQuery('#authorAddr').val('');
+        jQuery('#value').val('');
+        showView("viewDonate");
+    });
 
-    jQuery('#linkDonateButton').click(); //TODO
+    jQuery("#donate").click(function(){
+        var authorAddr = jQuery("#authorAddr").val();
+        var value = jQuery("#value").val();
+        if( !authorAddr =='' && !value =='' && !authorAddr.length != 42 && !isNaN(value)) {
+            donateToAuthor(authorAddr, Number(value));
+        }
+        else{
+            showError("Invalid Address or Value!")
+        }
+    })
+
+    jQuery("#linkBuyImage").click(); //TODO
     
     const ipfs = window.IpfsApi('localhost', '5001');
     const Buffer = ipfs.Buffer;
@@ -100,6 +278,7 @@ function showView(viewName) {
     if (localStorage.User) {
         jQuery('#linkRegisterUser').hide();
 
+        jQuery('#linkDonate').show();
         jQuery('#linkHome').show();
         jQuery('#linkGetImages').show();
         jQuery('#linkSubmitImages').show();
@@ -111,6 +290,7 @@ function showView(viewName) {
         jQuery('#linkSubmitImages').hide();
         jQuery('#linkDeleteUser').hide();
         jQuery('#linkUserInfo').hide();
+        jQuery('#linkDonate').hide();
 
         jQuery('#linkRegisterUser').show();
         jQuery('#linkHome').show();
@@ -162,7 +342,8 @@ function uploadImage(){
                 return showError(err);
             if (result) {
                 let ipfsHash = result[0].hash;
-                contract.sell(ipfsHash, 1, function (err, txHash) {
+                let price = jQuery("#priceSelect").val();
+                contract.sell(ipfsHash, Number(price), function (err, txHash) {
                     if(err)
                         return showError("Smart contract call failed: " + err);
                     showInfo(`Image ${ipfsHash} <b>successfully added</b> to the gallery. Transaction hash: ${txHash}`);
@@ -192,18 +373,17 @@ function viewGetImages() {
                     let ipfsHash = result[0];
                     let contractPublishDate = result[1];
                     let author = result[2];
-                    let price = result[3] * ETH;
+                    let price = result[3];
                     let div = jQuery('<div>');
                     let url = "https://ipfs.io/ipfs/" + ipfsHash;
 
                     let displayDate = new Date(contractPublishDate * 1000).toLocaleString();
                     div
-                        .append(jQuery(`<p>Image published on: ${displayDate}</p>`))
-                        .append(jQuery(`<p>Author Address: <i>${author}</i></p>`))
-                        .append(jQuery(`<img src="${url}"/>`))
-                        .append(jQuery(`<p>Price: ${price} WEI</p>`))
-                        .append(jQuery(`<input type="button" id="linkBuyImage" value="Buy!" style = "color: red; "/>`))
-                        .append(jQuery(`<input type="button" id="linkDonate" value="Donate!" style = "color: green; "/>`))
+                        .append(jQuery(`<p style="text-align:center;">Image published on: ${displayDate}</p>`))
+                        .append(jQuery(`<p style="text-align:center;">Author Address: <i>${author}</i></p>`))
+                        .append(jQuery(`<center><img src="${url}" alt="Loading..." class="ipfsImage"/></center>`))
+                        .append(jQuery(`<p>Price: ${price} ETH</p>`))
+                        .append(jQuery(`<input type="button" id="linkBuyImage" value="Buy!" style = "background-color: red; "/>`))
                     html.append(div);
                 })
             }
@@ -234,4 +414,28 @@ function deleteUser() {
     showView('viewHome');
     jQuery('.btn').removeClass('active');
     jQuery('#linkHome').addClass('active');
+}
+
+function buyImage(index) {
+    
+}
+
+function donateToAuthor(authorAddr, amount) {
+    if(typeof Web3 === 'undefined')
+        return showError("Please install MetaMask to access the Ethereum Web3 API from your Web browser.");
+    web3js = new Web3(web3.currentProvider); 
+    web3js.eth.getAccounts((err, accounts) => {
+        if (!err && accounts.length > 0) {
+            var account = accounts[0];
+            web3js.eth.sendTransaction({from:account, to:authorAddr, value: amount},function(err, transHash){
+                if(err)
+                    showError(err);
+                else
+                    showInfo("Transaction hash: "+ transHash);
+            });
+        } 
+        else{
+            showError(err);
+        }
+    });
 }

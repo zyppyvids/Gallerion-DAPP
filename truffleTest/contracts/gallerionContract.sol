@@ -42,9 +42,14 @@ contract gallerionContract {
     }
 
     function buy(uint index) public {
+        if (index >= images.length) return;
         Image memory image = images[index];
         ownedImages[msg.sender].push(image.hash);
-        delete images[index];
+        for (uint i = index; i < images.length-1; i++){
+            images[i] = images[i+1];
+        }
+        delete images[images.length-1];
+        images.length--;
         imageCount--;
     }
 

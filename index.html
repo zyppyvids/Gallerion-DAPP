@@ -18,12 +18,13 @@
         <script src="src/gallerion.js"></script>
     </head>
 
-    <body class="bg">
+    <body class="bg preventcopy">
         <header id="menu">
             <a href="#" id="linkHome" class="btn">Home</a>
             <a href="#" id="linkSubmitImages" class="btn">Submit Images</a>
             <a href="#" id="linkGetImages" class="btn">View Images</a>
             <a href="#" id="linkRegisterUser" class="btn">User Registration</a>
+            <a href="#" id="linkDonate" class="btn">Donate!</a>
             <a href="#" id="linkUserInfo" class="btn">User Info</a>
             <a href="#" id="linkDeleteUser" class="btn">Delete User</a>
         </header>
@@ -53,14 +54,38 @@
 
             <section id="viewSubmitImages">
                 <h1>Submit an Image</h1>
-                <p>Authors can register (upload) new images to the "Gallerion" smart contract on the Ethereum blockchain decentralized network.</p>
+                <p style="text-align: center;">Authors can register (upload) new images to the "Gallerion" smart contract on the Ethereum blockchain decentralized network.</p>
                 <input type="file" id="imageForUpload" accept="image/*" /><br/>
-                <input type="button" id="imageUploadButton" value="Submit" />
+                Price: <select id="priceSelect">
+                    <option value="1">1 ETH</option>
+                    <option value="2">2 ETH</option>
+                    <option value="3">3 ETH</option>
+                    <option value="4">4 ETH</option>
+                    <option value="5">5 ETH</option>
+                    <option value="6">6 ETH</option>
+                    <option value="7">7 ETH</option>
+                    <option value="8">8 ETH</option>
+                    <option value="9">9 ETH</option>
+                    <option value="10">10 ETH</option>
+                </select><br/>
+                <input type="button" id="imageUploadButton" value="Submit" /><br/>
             </section>
 
             <section id="viewGetImages">
                 <h1>Images</h1>
                 <p style="text-align: center;">Users can view images in the gallery on the Ethereum network.</p>
+            </section>
+
+            <section id="viewDonate">
+                <form align = "center">
+                    Author Address (42 Hex Digits):<br>
+                        <input type="text" name="authorAddr" id="authorAddr" placeholder="0x0000000000000000000000000000000000000000"><br>
+                    <br>
+                    Value (ETH):<br>
+                        <input type="text" name="value" id="value"><br>
+                    <br>
+                        <input type="button" id="donate" value="Donate!" style="background-color: green" />
+                </form>
             </section>
 
             <section id="viewRegisterUser">
