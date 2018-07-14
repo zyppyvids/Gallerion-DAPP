@@ -6,7 +6,6 @@
 - Client-side app - (HTML5) ✅
 - Decentralized Storage - (IPFS) ✅
 - Unit tests - (Truffle Tests) ✅
-- Server-side logic - (JavaScript) ✅
 
 ## Business Logic
 - *Guests* can view the *photos and pictures*
@@ -17,7 +16,6 @@
   - Each *picture* consists of an image in IPFS
 - *Users* should have a wallet
   - *MetaMask*
-  - Transaction signing is in the client-side
   
 ## Bonus 
 - Create token
