@@ -429,13 +429,10 @@ function buyImage(i) {
             var authorAddr = jQuery(`#author${i}`).text().split(" ")[2];
             var amount = Number(jQuery(`#price${i}`).text().split(" ")[1]);
             var hash = jQuery(`#price${i}`).attr('class');
-            console.log(amount);
-            console.log(hash);
             web3js.eth.sendTransaction({from:account, to:authorAddr, value: amount * ETH},function(err, transHash){
                 if(err)
                     showError(err);
                 let contract = web3js.eth.contract(Gallerion.gallerionContractABI).at(Gallerion.gallerionContractAddress);
-                console.log(i);
                 contract.buy(i, function (err, result) {
                 if(err)
                     return showError("Smart contract call failed: "+ err);
