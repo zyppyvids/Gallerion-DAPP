@@ -78,6 +78,18 @@ body {
     color: black;
 }
 
+#dynamicLink {
+    color:white !important;
+    text-decoration: none;
+    -webkit-transition: color 1s;
+    transition: color 1s;
+}
+
+#dynamicLink:hover {
+    color: rgb(1, 1, 60) !important;
+    text-decoration: none;
+}
+
 main > section {
     display: none;
     padding: 20px 5px;

@@ -349,7 +349,7 @@ function uploadImage(){
                 contract.sell(ipfsHash, Number(price), function (err, txHash) {
                     if(err)
                         return showError("Smart contract call failed: " + err);
-                    showInfo(`Image ${ipfsHash} <b>successfully added</b> to the gallery. Transaction hash: ${txHash}`);
+                    showInfo(`Image ${ipfsHash} <b>successfully added</b> to the gallery. Transaction hash: <a id="dynamicLink" href="https://ropsten.etherscan.io/tx/${transHash}">${transHash}</a>`);
                 })
             }
         })
@@ -436,7 +436,7 @@ function buyImage(i) {
                 contract.buy(i, function (err, result) {
                 if(err)
                     return showError("Smart contract call failed: "+ err);
-                showInfo(`Transaction hash: ${transHash}`);
+                showInfo(`Transaction hash: <a id="dynamicLink" href="https://ropsten.etherscan.io/tx/${transHash}">${transHash}</a>`);
                 window.open("https://ipfs.io/ipfs/" + hash);
                 })
             });
@@ -458,7 +458,7 @@ function donateToAuthor(authorAddr, amount) {
                 if(err)
                     showError(err);
                 else
-                    showInfo(`Transaction hash: ${transHash}`);
+                    showInfo(`Transaction hash: <a id="dynamicLink" href="https://ropsten.etherscan.io/tx/${transHash}">${transHash}</a>`);
             });
         } 
         else{
