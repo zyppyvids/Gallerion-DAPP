@@ -25,3 +25,7 @@
 <p align="center">
 <img src="https://tuku.vimsky.com/images/2018/02/80dc7f722a344d6d84556e990ff16018.jpg" alt="Decentralised App">
 </p>
+
+## IF YOU WANT YOU CAN CONTRIBUTE!
+- by Creating a token
+- or Anything you think will be good!
